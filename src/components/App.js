@@ -8,13 +8,28 @@ class App extends Component {
     active: false,
   };
 
+  addSecond = () => {
+    this.setState((prev) => ({
+      time: ++prev.time,
+    }));
+  };
+
+  handleClick = () => {
+    if (this.state.active) clearInterval(this.idInterval);
+    else this.idInterval = setInterval(() => this.addSecond(), 1000);
+
+    this.setState((prev) => ({
+      active: !prev.active,
+    }));
+  };
+
   render() {
-    const { time } = this.state;
+    const { time, active } = this.state;
 
     return (
       <>
         <h2>{time}</h2>
-        <SwitchButton />
+        <SwitchButton click={this.handleClick} active={active} />
       </>
     );
   }
