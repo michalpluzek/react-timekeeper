@@ -1,38 +1,30 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import SwitchButton from "./SwitchButton";
 
-class App extends Component {
-  state = {
-    time: 0,
-    active: false,
+let idInterval;
+
+const App = () => {
+  const [time, setTime] = useState(0);
+  const [active, setActive] = useState(false);
+
+  const addSecond = () => {
+    setTime((prevValue) => prevValue + 1);
   };
 
-  addSecond = () => {
-    this.setState((prev) => ({
-      time: ++prev.time,
-    }));
+  const handleClick = () => {
+    if (active) clearInterval(idInterval);
+    else idInterval = setInterval(() => addSecond(), 1000);
+
+    setActive((prevValue) => !prevValue);
   };
 
-  handleClick = () => {
-    if (this.state.active) clearInterval(this.idInterval);
-    else this.idInterval = setInterval(() => this.addSecond(), 1000);
-
-    this.setState((prev) => ({
-      active: !prev.active,
-    }));
-  };
-
-  render() {
-    const { time, active } = this.state;
-
-    return (
-      <>
-        <h2>{time}</h2>
-        <SwitchButton click={this.handleClick} active={active} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <h2>{time}</h2>
+      <SwitchButton click={handleClick} active={active} />
+    </>
+  );
+};
 
 export default App;
