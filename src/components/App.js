@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import SwitchButton from "./SwitchButton";
 
@@ -13,11 +13,14 @@ const App = () => {
   };
 
   const handleClick = () => {
-    if (active) clearInterval(idInterval);
-    else idInterval = setInterval(() => addSecond(), 1000);
-
     setActive((prevValue) => !prevValue);
   };
+
+  useEffect(() => {
+    if (active) idInterval = setInterval(() => addSecond(), 1000);
+    else clearInterval(idInterval);
+    return () => clearInterval(idInterval);
+  }, [active]);
 
   return (
     <>
